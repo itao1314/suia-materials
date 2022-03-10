@@ -1,4 +1,4 @@
-/// Copyright (c) 2021 Razeware LLC
+/// Copyright (c) 2022 Razeware LLC
 /// 
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -32,63 +32,55 @@
 
 import SwiftUI
 
-
-struct CardDetailView: View {
-    @EnvironmentObject var viewState: ViewState
-    @State private var currentModal: CardModal?
-    @Binding var card: Card
+struct StickerPicker: View {
+    @State private var stickerNames: [String] = []
 
     var body: some View {
-        content
-            .modifier(CardToolbar(currentModal: $currentModal))
-            .sheet(item: $currentModal) { item in
-                switch item {
-                case .stickerPicker:
-                    StickerPicker()
-                default:
-                    EmptyView()
+        ScrollView {
+            LazyVStack {
+                ForEach(stickerNames, id: \.self) {
+                    Image(uiImage: image(from: $0))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
                 }
             }
+        }
+        .onAppear {
+            stickerNames = loadStickers()
+        }
     }
 
-    var content: some View {
-        ZStack {
-            card.backgroundColor
-                .edgesIgnoringSafeArea(.all)
-            ForEach(card.elements, id: \.id) { element in
-                CardElementView(element: element)
-                    .contextMenu {
-                        // swiftlint:disable:next multiple_closures_with_trailing_closure
-                        Button(action: { card.remove(element) }) {
-                            Label("Delete", systemImage: "trash")
-                        }
-                    }
-                    .resizableView(transform: bindingTransform(for: element))
-                    .frame(
-                        width: element.transform.size.width,
-                        height: element.transform.size.height)
+    func loadStickers() -> [String] {
+        var themes: [URL] = []
+        var stickerNames: [String] = []
+
+        let fileManager = FileManager.default
+        if let resourcePath = Bundle.main.resourcePath, let enumerator = fileManager.enumerator(at: URL(fileURLWithPath: resourcePath + "/Stickers"), includingPropertiesForKeys: nil, options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants]) {
+            for case let url as URL in enumerator where url.hasDirectoryPath {
+                themes.append(url)
             }
         }
+
+        for theme in themes {
+            if let files = try? fileManager.contentsOfDirectory(atPath: theme.path) {
+                for file in files {
+                    stickerNames.append(theme.path + "/" + file)
+                }
+            }
+        }
+
+        return stickerNames
     }
 
-    func bindingTransform(for element: CardElement)
-    -> Binding<Transform> {
-        guard let index = element.index(in: card.elements) else {
-            fatalError("Element does not exist")
-        }
-        return $card.elements[index].transform
+    func image(from path: String) -> UIImage {
+        print("loading:", path)
+        return UIImage(named: path) ?? UIImage(named: "error-image") ?? UIImage()
     }
+
 }
 
-struct CardDetailView_Previews: PreviewProvider {
-    struct CardDetailPreview: View {
-        @State private var card = initialCards[0]
-        var body: some View {
-            CardDetailView(card: $card)
-                .environmentObject(ViewState(card: card))
-        }
-    }
+struct StickerPicker_Previews: PreviewProvider {
     static var previews: some View {
-        CardDetailPreview()
+        StickerPicker()
     }
 }

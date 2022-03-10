@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B080E0127C609560071EE32 /* Stickers in Resources */ = {isa = PBXBuildFile; fileRef = 2B080E0027C609560071EE32 /* Stickers */; };
+		2B080E0427C60B590071EE32 /* StickerPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B080E0327C60B590071EE32 /* StickerPicker.swift */; };
 		8208714825C6937D00AA73AD /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8208714725C6937D00AA73AD /* license.txt */; };
 		8225235725C65E8000A61DC3 /* CardToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8225235625C65E8000A61DC3 /* CardToolbar.swift */; };
 		8225235B25C6736D00A61DC3 /* CardElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8225235A25C6736D00A61DC3 /* CardElement.swift */; };
@@ -36,6 +38,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2B080E0027C609560071EE32 /* Stickers */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Stickers; path = ../../../../assets/Stickers; sourceTree = "<group>"; };
+		2B080E0327C60B590071EE32 /* StickerPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPicker.swift; sourceTree = "<group>"; };
 		8208714725C6937D00AA73AD /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
 		8225235625C65E8000A61DC3 /* CardToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardToolbar.swift; sourceTree = "<group>"; };
 		8225235A25C6736D00A61DC3 /* CardElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardElement.swift; sourceTree = "<group>"; };
@@ -77,6 +81,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2B080E0227C60B450071EE32 /* Card Modal Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B080E0327C60B590071EE32 /* StickerPicker.swift */,
+			);
+			path = "Card Modal Views";
+			sourceTree = "<group>";
+		};
 		82F3FA9225C62C1000BB30D0 = {
 			isa = PBXGroup;
 			children = (
@@ -97,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				82F3FA9E25C62C1000BB30D0 /* CardsApp.swift */,
+				2B080E0027C609560071EE32 /* Stickers */,
 				82F3FAD025C63DE100BB30D0 /* Views */,
 				82F3FAD225C63DFB00BB30D0 /* Model */,
 				82F3FAE925C65CA700BB30D0 /* Config */,
@@ -133,6 +146,7 @@
 		82F3FAD125C63DEA00BB30D0 /* Single Card Views */ = {
 			isa = PBXGroup;
 			children = (
+				2B080E0227C60B450071EE32 /* Card Modal Views */,
 				82F3FAB825C62DEB00BB30D0 /* SingleCardView.swift */,
 				82F3FAC625C6371000BB30D0 /* CardDetailView.swift */,
 				82F3FACC25C638F200BB30D0 /* CardBottomToolbar.swift */,
@@ -234,6 +248,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B080E0127C609560071EE32 /* Stickers in Resources */,
 				8208714825C6937D00AA73AD /* license.txt in Resources */,
 				82F3FAA625C62C1100BB30D0 /* Preview Assets.xcassets in Resources */,
 				82F3FAA325C62C1100BB30D0 /* Assets.xcassets in Resources */,
@@ -285,6 +300,7 @@
 				82F3FAE225C659CB00BB30D0 /* ViewExtensions.swift in Sources */,
 				82F3FAE725C65C8400BB30D0 /* Settings.swift in Sources */,
 				82F3FAB625C62D6100BB30D0 /* CardThumbnailView.swift in Sources */,
+				2B080E0427C60B590071EE32 /* StickerPicker.swift in Sources */,
 				8225238125C681AA00A61DC3 /* CardElementView.swift in Sources */,
 				82F3FADE25C6564000BB30D0 /* Operators.swift in Sources */,
 				82F3FACA25C638DD00BB30D0 /* CardModal.swift in Sources */,
