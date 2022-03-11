@@ -34,14 +34,24 @@ import SwiftUI
 
 struct StickerPicker: View {
     @State private var stickerNames: [String] = []
+    @Binding var stickerImage: UIImage?
+    @Environment(\.presentationMode) var presentationMode
+
+    let columns = [
+        GridItem(.adaptive(minimum: 120, maximum: 10))
+    ]
 
     var body: some View {
         ScrollView {
-            LazyVStack {
-                ForEach(stickerNames, id: \.self) {
-                    Image(uiImage: image(from: $0))
+            LazyVGrid(columns: columns) {
+                ForEach(stickerNames, id: \.self) { sticker in
+                    Image(uiImage: image(from: sticker))
                         .resizable()
                         .aspectRatio(contentMode: .fit)
+                        .onTapGesture {
+                            stickerImage = image(from: sticker)
+                            presentationMode.wrappedValue.dismiss()
+                        }
                 }
             }
         }
@@ -81,6 +91,6 @@ struct StickerPicker: View {
 
 struct StickerPicker_Previews: PreviewProvider {
     static var previews: some View {
-        StickerPicker()
+        StickerPicker(stickerImage: .constant(UIImage()))
     }
 }
