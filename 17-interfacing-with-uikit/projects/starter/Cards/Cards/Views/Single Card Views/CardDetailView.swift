@@ -34,71 +34,81 @@ import SwiftUI
 
 
 struct CardDetailView: View {
-  @EnvironmentObject var viewState: ViewState
-  @State private var currentModal: CardModal?
-  @State private var stickerImage: UIImage?
-  @Binding var card: Card
+    @EnvironmentObject var viewState: ViewState
+    @State private var currentModal: CardModal?
+    @State private var stickerImage: UIImage?
+    @State private var images: [UIImage] = []
+    @Binding var card: Card
 
-  var body: some View {
-    content
-      .modifier(CardToolbar(currentModal: $currentModal))
-      .sheet(item: $currentModal) { item in
-        switch item {
-        case .stickerPicker:
-          StickerPicker(stickerImage: $stickerImage)
-            .onDisappear {
-              if let stickerImage = stickerImage {
-                card.addElement(uiImage: stickerImage)
-              }
-              stickerImage = nil
+    var body: some View {
+        content
+            .onDrop(of: [.image], delegate: CardDrop(card: $card))
+            .modifier(CardToolbar(currentModal: $currentModal))
+            .sheet(item: $currentModal) { item in
+                switch item {
+                case .stickerPicker:
+                    StickerPicker(stickerImage: $stickerImage)
+                        .onDisappear {
+                            if let stickerImage = stickerImage {
+                                card.addElement(uiImage: stickerImage)
+                            }
+                            stickerImage = nil
+                        }
+                case .photoPicker:
+                    PhotoPicker(images: $images)
+                        .onDisappear {
+                            for image in images {
+                                card.addElement(uiImage: image)
+                            }
+                            images = []
+                        }
+                default:
+                    EmptyView()
+                }
             }
-        default:
-          EmptyView()
+    }
+
+    var content: some View {
+        ZStack {
+            card.backgroundColor
+                .edgesIgnoringSafeArea(.all)
+            ForEach(card.elements, id: \.id) { element in
+                CardElementView(element: element)
+                    .contextMenu {
+                        // swiftlint:disable:next multiple_closures_with_trailing_closure
+                        Button(action: { card.remove(element) }) {
+                            Label("Delete", systemImage: "trash")
+                        }
+                    }
+                    .resizableView(transform: bindingTransform(for: element))
+                    .frame(
+                        width: element.transform.size.width,
+                        height: element.transform.size.height)
+            }
         }
-      }
-  }
-
-  var content: some View {
-    ZStack {
-      card.backgroundColor
-        .edgesIgnoringSafeArea(.all)
-      ForEach(card.elements, id: \.id) { element in
-        CardElementView(element: element)
-          .contextMenu {
-            // swiftlint:disable:next multiple_closures_with_trailing_closure
-            Button(action: { card.remove(element) }) {
-              Label("Delete", systemImage: "trash")
-            }
-          }
-          .resizableView(transform: bindingTransform(for: element))
-          .frame(
-            width: element.transform.size.width,
-            height: element.transform.size.height)
-      }
     }
-  }
 
-  // 1
-  func bindingTransform(for element: CardElement)
+    // 1
+    func bindingTransform(for element: CardElement)
     -> Binding<Transform> {
-    // 2
-    guard let index = element.index(in: card.elements) else {
-      fatalError("Element does not exist")
+        // 2
+        guard let index = element.index(in: card.elements) else {
+            fatalError("Element does not exist")
+        }
+        // 3
+        return $card.elements[index].transform
     }
-    // 3
-    return $card.elements[index].transform
-  }
 }
 
 struct CardDetailView_Previews: PreviewProvider {
-  struct CardDetailPreview: View {
-    @State private var card = initialCards[0]
-    var body: some View {
-      CardDetailView(card: $card)
-        .environmentObject(ViewState(card: card))
+    struct CardDetailPreview: View {
+        @State private var card = initialCards[0]
+        var body: some View {
+            CardDetailView(card: $card)
+                .environmentObject(ViewState(card: card))
+        }
     }
-  }
-  static var previews: some View {
-    CardDetailPreview()
-  }
+    static var previews: some View {
+        CardDetailPreview()
+    }
 }
