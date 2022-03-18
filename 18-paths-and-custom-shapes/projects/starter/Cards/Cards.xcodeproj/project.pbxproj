@@ -39,6 +39,8 @@
 		82F3FAE225C659CB00BB30D0 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F3FAE125C659CB00BB30D0 /* ViewExtensions.swift */; };
 		82F3FAE725C65C8400BB30D0 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F3FAE625C65C8400BB30D0 /* Settings.swift */; };
 		82F3FAEE25C65D8B00BB30D0 /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F3FAED25C65D8B00BB30D0 /* ColorExtensions.swift */; };
+		D31B00B027E434E600E481B9 /* FramePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31B00AF27E434E600E481B9 /* FramePicker.swift */; };
+		D31B00B227E45DA300E481B9 /* AnyShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31B00B127E45DA300E481B9 /* AnyShape.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +78,8 @@
 		82F3FAE125C659CB00BB30D0 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		82F3FAE625C65C8400BB30D0 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		82F3FAED25C65D8B00BB30D0 /* ColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensions.swift; sourceTree = "<group>"; };
+		D31B00AF27E434E600E481B9 /* FramePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FramePicker.swift; sourceTree = "<group>"; };
+		D31B00B127E45DA300E481B9 /* AnyShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyShape.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +99,7 @@
 				82D3B10125C6C1C400970C6A /* StickerPicker.swift */,
 				82D3B10725C6C9A100970C6A /* PhotoPicker.swift */,
 				82D3B11E25C6D22500970C6A /* PencilView.swift */,
+				D31B00AF27E434E600E481B9 /* FramePicker.swift */,
 			);
 			path = "Card Modal Views";
 			sourceTree = "<group>";
@@ -177,6 +182,7 @@
 				8225235D25C6738200A61DC3 /* Card.swift */,
 				8225236025C673B700A61DC3 /* CardStore.swift */,
 				2BC72E0D27E2CF0E00159788 /* Shapes.swift */,
+				D31B00B127E45DA300E481B9 /* AnyShape.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -305,6 +311,7 @@
 				2BC72E0E27E2CF0E00159788 /* Shapes.swift in Sources */,
 				82F3FAB325C62CDC00BB30D0 /* CardsListView.swift in Sources */,
 				82F3FABC25C62F6200BB30D0 /* ViewState.swift in Sources */,
+				D31B00B227E45DA300E481B9 /* AnyShape.swift in Sources */,
 				82F3FA9F25C62C1000BB30D0 /* CardsApp.swift in Sources */,
 				8225235B25C6736D00A61DC3 /* CardElement.swift in Sources */,
 				82F3FAB925C62DEB00BB30D0 /* SingleCardView.swift in Sources */,
@@ -312,6 +319,7 @@
 				82D3B10B25C6CF4C00970C6A /* CardDrop.swift in Sources */,
 				8225236825C6793200A61DC3 /* PreviewData.swift in Sources */,
 				82F3FAD625C652FD00BB30D0 /* ResizableView.swift in Sources */,
+				D31B00B027E434E600E481B9 /* FramePicker.swift in Sources */,
 				82F3FAE225C659CB00BB30D0 /* ViewExtensions.swift in Sources */,
 				82F3FAE725C65C8400BB30D0 /* Settings.swift in Sources */,
 				82F3FAB625C62D6100BB30D0 /* CardThumbnailView.swift in Sources */,
