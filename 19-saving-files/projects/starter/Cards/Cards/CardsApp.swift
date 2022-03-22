@@ -34,14 +34,54 @@ import SwiftUI
 
 @main
 struct CardsApp: App {
-  @StateObject var store = CardStore(defaultData: true)
-  @StateObject var viewState = ViewState()
-
-  var body: some Scene {
-    WindowGroup {
-      CardsView()
-        .environmentObject(viewState)
-        .environmentObject(store)
+    @StateObject var store = CardStore(defaultData: true)
+    @StateObject var viewState = ViewState()
+    
+    var body: some Scene {
+        WindowGroup {
+            CardsView()
+                .environmentObject(viewState)
+                .environmentObject(store)
+                .onAppear {
+                    print(FileManager.documentURL ?? "")
+                }
+        }
     }
-  }
+    
+    init() {
+        Team.load()
+    }
 }
+
+struct Team: Codable {
+    let names: [String]
+    let count: Int
+    
+    static func save() {
+        do {
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = .prettyPrinted
+            let data = try encoder.encode(teamData)
+            if let url = FileManager.documentURL?.appendingPathComponent("TeamData") {
+                try data.write(to: url)
+            }
+        } catch  {
+            print(error.localizedDescription)
+        }
+    }
+    
+    static func load() {
+        if let url = FileManager.documentURL?.appendingPathComponent("TeamData") {
+            do {
+                let data = try Data(contentsOf: url)
+                let decoder = JSONDecoder()
+                let team = try decoder.decode(Team.self, from: data)
+                print(team)
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+}
+
+let teamData = Team(names: ["Richard", "Libranner", "Caroline"], count: 3)
