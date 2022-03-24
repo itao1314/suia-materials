@@ -43,6 +43,7 @@
 		82F3FAE225C659CB00BB30D0 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F3FAE125C659CB00BB30D0 /* ViewExtensions.swift */; };
 		82F3FAE725C65C8400BB30D0 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F3FAE625C65C8400BB30D0 /* Settings.swift */; };
 		82F3FAEE25C65D8B00BB30D0 /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F3FAED25C65D8B00BB30D0 /* ColorExtensions.swift */; };
+		D36B9F5427EAC17B006C1FFD /* AngleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B9F5327EAC17B006C1FFD /* AngleExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,6 +85,7 @@
 		82F3FAE125C659CB00BB30D0 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		82F3FAE625C65C8400BB30D0 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		82F3FAED25C65D8B00BB30D0 /* ColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensions.swift; sourceTree = "<group>"; };
+		D36B9F5327EAC17B006C1FFD /* AngleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngleExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,6 +201,7 @@
 				8225236B25C6799900A61DC3 /* TextExtensions.swift */,
 				82F3FAE125C659CB00BB30D0 /* ViewExtensions.swift */,
 				82F3FAED25C65D8B00BB30D0 /* ColorExtensions.swift */,
+				D36B9F5327EAC17B006C1FFD /* AngleExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 				820E12B125C7950100929AD0 /* AnyShape.swift in Sources */,
 				82F3FA9F25C62C1000BB30D0 /* CardsApp.swift in Sources */,
 				8225235B25C6736D00A61DC3 /* CardElement.swift in Sources */,
+				D36B9F5427EAC17B006C1FFD /* AngleExtension.swift in Sources */,
 				82F3FAB925C62DEB00BB30D0 /* SingleCardView.swift in Sources */,
 				82F3FACD25C638F200BB30D0 /* CardBottomToolbar.swift in Sources */,
 				82D3B10B25C6CF4C00970C6A /* CardDrop.swift in Sources */,

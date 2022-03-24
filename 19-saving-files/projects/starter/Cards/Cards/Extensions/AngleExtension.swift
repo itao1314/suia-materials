@@ -1,4 +1,4 @@
-/// Copyright (c) 2021 Razeware LLC
+/// Copyright (c) 2022 Razeware LLC
 /// 
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -32,14 +32,20 @@
 
 import SwiftUI
 
-struct Transform {
-  var size = CGSize(
-    width: Settings.defaultElementSize.width,
-    height: Settings.defaultElementSize.height)
-  var rotation: Angle = .zero
-  var offset: CGSize = .zero
-}
-
-extension Transform: Codable {
+extension Angle: Codable {
     
+    enum CodingKeys: CodingKey {
+        case degress
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(degrees, forKey: .degress)
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let degress = try container.decode(Double.self, forKey: .degress)
+        self.init(degrees: degress)
+    }
 }
