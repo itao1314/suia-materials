@@ -44,6 +44,7 @@
 		82F3FAE725C65C8400BB30D0 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F3FAE625C65C8400BB30D0 /* Settings.swift */; };
 		82F3FAEE25C65D8B00BB30D0 /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F3FAED25C65D8B00BB30D0 /* ColorExtensions.swift */; };
 		D36B9F5427EAC17B006C1FFD /* AngleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B9F5327EAC17B006C1FFD /* AngleExtension.swift */; };
+		D392949D27EC678B00F64F0F /* TextPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D392949C27EC678B00F64F0F /* TextPicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,6 +87,7 @@
 		82F3FAE625C65C8400BB30D0 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		82F3FAED25C65D8B00BB30D0 /* ColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensions.swift; sourceTree = "<group>"; };
 		D36B9F5327EAC17B006C1FFD /* AngleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngleExtension.swift; sourceTree = "<group>"; };
+		D392949C27EC678B00F64F0F /* TextPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				82D3B10725C6C9A100970C6A /* PhotoPicker.swift */,
 				82D3B11E25C6D22500970C6A /* PencilView.swift */,
 				820E12A525C791B000929AD0 /* FramePicker.swift */,
+				D392949C27EC678B00F64F0F /* TextPicker.swift */,
 			);
 			path = "Card Modal Views";
 			sourceTree = "<group>";
@@ -317,6 +320,7 @@
 				8225236125C673B700A61DC3 /* CardStore.swift in Sources */,
 				82F3FAC325C62FCB00BB30D0 /* CardsView.swift in Sources */,
 				8225235E25C6738200A61DC3 /* Card.swift in Sources */,
+				D392949D27EC678B00F64F0F /* TextPicker.swift in Sources */,
 				82F3FAA125C62C1000BB30D0 /* ContentView.swift in Sources */,
 				820E12A325C78EE400929AD0 /* Shapes.swift in Sources */,
 				82F3FAB325C62CDC00BB30D0 /* CardsListView.swift in Sources */,
