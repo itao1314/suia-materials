@@ -33,31 +33,46 @@
 import SwiftUI
 
 struct CardsView: View {
-  @EnvironmentObject var viewState: ViewState
-  @EnvironmentObject var store: CardStore
-
-  var body: some View {
-    ZStack {
-      VStack {
-        Button(action: {
-          viewState.selectedCard = store.addCard()
-          viewState.showAllCards = false
-        }, label: {
-          Text("Add")
-        })
-        CardsListView()
-      }
-      if !viewState.showAllCards {
-        SingleCardView()
-      }
+    @EnvironmentObject var viewState: ViewState
+    @EnvironmentObject var store: CardStore
+    
+    var body: some View {
+        ZStack {
+            
+            CardsListView()
+            
+            VStack {
+                Spacer()
+                createButton
+            }
+            
+            if !viewState.showAllCards {
+                SingleCardView()
+            }
+        }
+        .background(Color("background")
+            .edgesIgnoringSafeArea(.all))
     }
-  }
+    
+    var createButton: some View {
+        Button {
+            viewState.selectedCard = store.addCard()
+            viewState.showAllCards = false
+        } label: {
+            Label("Create New", systemImage: "plus")
+                .frame(maxWidth: .infinity)
+        }
+        .font(.system(size: 16, weight: .bold))
+        .padding([.top, .bottom], 10)
+        .background(Color("barColor"))
+        .accentColor(/*@START_MENU_TOKEN@*/.white/*@END_MENU_TOKEN@*/)
+    }
 }
 
 struct CardsView_Previews: PreviewProvider {
-  static var previews: some View {
-    CardsView()
-      .environmentObject(ViewState())
-      .environmentObject(CardStore(defaultData: true))
-  }
+    static var previews: some View {
+        CardsView()
+            .environmentObject(ViewState())
+            .environmentObject(CardStore(defaultData: true))
+    }
 }
