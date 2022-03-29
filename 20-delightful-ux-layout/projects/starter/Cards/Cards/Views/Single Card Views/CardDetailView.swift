@@ -50,7 +50,7 @@ struct CardDetailView: View {
                 .onDisappear {
                     card.save()
                 }
-                .onDrop(of: [.image], delegate: CardDrop(card: $card))
+                .onDrop(of: [.image], delegate: CardDrop(card: $card, size: proxy.size, frame: proxy.frame(in: .global)))
                 .modifier(CardToolbar(currentModal: $currentModal))
                 .cardModals(card: $card, currentModal: $currentModal)
                 .frame(width: calculateSize(proxy.size).width, height: calculateSize(proxy.size).height)

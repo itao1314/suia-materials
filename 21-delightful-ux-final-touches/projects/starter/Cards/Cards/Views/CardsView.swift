@@ -33,45 +33,60 @@
 import SwiftUI
 
 struct CardsView: View {
-  @EnvironmentObject var viewState: ViewState
-  @EnvironmentObject var store: CardStore
-
-  var body: some View {
-    ZStack {
-      CardsListView()
-      VStack {
-        Spacer()
-        createButton
-      }
-      if !viewState.showAllCards {
-        SingleCardView()
-      }
+    @EnvironmentObject var viewState: ViewState
+    @EnvironmentObject var store: CardStore
+    
+    var body: some View {
+        VStack {
+            if viewState.showAllCards {
+                ListSelectionView(selection: $viewState.cardListState)
+            }
+            ZStack {
+                switch viewState.cardListState {
+                case .list:
+                    CardsListView()
+                case .carousel:
+                    Carousel()
+                }
+                
+                VStack {
+                    Spacer()
+                    createButton
+                }
+                if !viewState.showAllCards {
+                    SingleCardView()
+                        .transition(.move(edge: .bottom))
+                        .zIndex(1)
+                }
+            }
+            .background(
+                Color("background")
+                    .edgesIgnoringSafeArea(.all))
+        }
     }
-    .background(
-      Color("background")
-        .edgesIgnoringSafeArea(.all))
-  }
-
-  var createButton: some View {
-    Button(action: {
-      viewState.selectedCard = store.addCard()
-      viewState.showAllCards = false
-      // swiftlint:disable:next multiple_closures_with_trailing_closure
-    }) {
-      Label("Create New", systemImage: "plus")
-        .frame(maxWidth: .infinity)
+    
+    var createButton: some View {
+        Button(action: {
+            viewState.selectedCard = store.addCard()
+            withAnimation {
+                viewState.showAllCards = false
+            }
+            // swiftlint:disable:next multiple_closures_with_trailing_closure
+        }) {
+            Label("Create New", systemImage: "plus")
+                .frame(maxWidth: .infinity)
+        }
+        .font(.system(size: 16, weight: .bold))
+        .padding([.top, .bottom], 10)
+        .background(Color("barColor"))
+        .accentColor(.white)
     }
-    .font(.system(size: 16, weight: .bold))
-    .padding([.top, .bottom], 10)
-    .background(Color("barColor"))
-    .accentColor(.white)
-  }
 }
 
 struct CardsView_Previews: PreviewProvider {
-  static var previews: some View {
-    CardsView()
-      .environmentObject(ViewState())
-      .environmentObject(CardStore(defaultData: true))
-  }
+    static var previews: some View {
+        CardsView()
+            .environmentObject(ViewState())
+            .environmentObject(CardStore(defaultData: true))
+    }
 }

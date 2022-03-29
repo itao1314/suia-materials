@@ -1,4 +1,4 @@
-/// Copyright (c) 2021 Razeware LLC
+/// Copyright (c) 2022 Razeware LLC
 /// 
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -32,35 +32,22 @@
 
 import SwiftUI
 
-struct CardThumbnailView: View {
-    let card: Card
-    var size: CGSize = .zero
-    
+struct ListSelectionView: View {
+    @Binding var selection: CardListState
     var body: some View {
-        
-        Group {
-            if let image = UIImage.load(uuidString: card.id.uuidString) {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-            } else {
-                card.backgroundColor
-            }
+        Picker(selection: $selection, label: Text("")) {
+            Image(systemName: "square.grid.2x2.fill")
+                .tag(CardListState.list)
+            Image(systemName: "rectangle.stack.fill")
+                .tag(CardListState.carousel)
         }
-        .cornerRadius(10)
-            .frame(
-                width: Settings.thumbnailSize(size: size).width,
-                height: Settings.thumbnailSize(size: size).height)
-            .shadow(
-                color: Color("shadow-color"),
-                radius: 3,
-                x: 0.0,
-                y: 0.0)
+        .pickerStyle(SegmentedPickerStyle())
+        .frame(width: 200)
     }
 }
 
-struct CardThumbnailView_Previews: PreviewProvider {
+struct ListSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        CardThumbnailView(card: initialCards[0])
+        ListSelectionView(selection: .constant(.list))
     }
 }

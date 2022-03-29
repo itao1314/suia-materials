@@ -79,6 +79,13 @@ struct CardModals: ViewModifier {
               }
               textElement = TextElement()
             }
+        case .shareSheet:
+            if let shareImage = card.shareImage {
+                ShareSheetView(activityItems: [shareImage], applicationActivities: nil)
+                    .onDisappear {
+                        card.shareImage = nil
+                    }
+            }
         }
       }
   }
