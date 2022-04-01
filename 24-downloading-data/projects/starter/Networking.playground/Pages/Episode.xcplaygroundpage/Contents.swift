@@ -2,6 +2,59 @@
 import Foundation
 import PlaygroundSupport
 PlaygroundPage.current.needsIndefiniteExecution = true
+
+struct EpisodeStore: Decodable {
+    var episodes: [Episode] = []
+    
+    enum CodingKeys: String, CodingKey {
+        case episodes = "data"
+    }
+}
+
+struct Episode: Decodable, Identifiable {
+    let id: String
+    let attributes: Attributes
+}
+
+struct Attributes: Codable {
+    let name: String
+    let released_at: Date
+}
+
+let baseURLString = "https://api.raywenderlich.com/api/"
+var urlComponents = URLComponents(string: baseURLString + "contents/")!
+var baseParams = [
+    "filter[subscription_types][]": "free",
+    "filter[content_types][]": "episode",
+    "sort": "-popularity",
+    "page[size]": "20",
+    "filter[q]": ""
+]
+urlComponents.setQueryItems(with: baseParams)
+urlComponents.queryItems! += [URLQueryItem(name: "filter[domain_ids][]", value: "1")]
+urlComponents.url?.absoluteString
+
+let contentURL = urlComponents.url!
+
+let decoder = JSONDecoder()
+decoder.dateDecodingStrategy = .formatted(.apiDateFormatter)
+
+URLSession.shared.dataTask(with: contentURL) { data, response, error in
+    defer { PlaygroundPage.current.finishExecution() }
+    if let data = data, let response = response as? HTTPURLResponse {
+        print(response.statusCode)
+        if let decodedResponse = try? decoder.decode(EpisodeStore.self, from: data) {
+            DispatchQueue.main.async {
+                let date = decodedResponse.episodes[0].attributes.released_at
+                DateFormatter.episodeDateFormatter.string(from: date)
+            }
+        }
+        return
+    }
+    print("Contents fetch failed: " + "\(error?.localizedDescription ?? "Unknown error")")
+}.resume()
+
+
 //: [VideoURL ->](@next)
 
 /// Copyright (c) 2021 Razeware LLC
