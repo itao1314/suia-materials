@@ -28,23 +28,32 @@ extension VideoURLString: Decodable {
     }
 }
 
-let videoId = 3021
-let baseURLString = "https://api.raywenderlich.com/api/videos/"
-let queryURLString = baseURLString + String(videoId) + "/stream"
-let queryURL = URL(string: queryURLString)!
-URLSession.shared.dataTask(with: queryURL) { data, response, error in
-    defer { PlaygroundPage.current.finishExecution() }
-    if let data = data, let response = response as? HTTPURLResponse {
-        print("\(videoId) \(response.statusCode)")
-        if let decodeedResponse = try? JSONDecoder().decode(VideoURLString.self, from: data) {
-            DispatchQueue.main.async {
-                print(decodeedResponse.urlString)
+class VideoURL {
+    var urlString = ""
+    
+    init(videoId: Int) {
+        let baseURLString = "https://api.raywenderlich.com/api/videos/"
+        let queryURLString = baseURLString + String(videoId) + "/stream"
+        guard let queryURL = URL(string: queryURLString) else { return }
+        URLSession.shared.dataTask(with: queryURL) { data, response, error in
+            defer { PlaygroundPage.current.finishExecution() }
+            if let data = data, let response = response as? HTTPURLResponse {
+                print("\(videoId) \(response.statusCode)")
+                if let decodeedResponse = try? JSONDecoder().decode(VideoURLString.self, from: data) {
+                    DispatchQueue.main.async {
+                        self.urlString = decodeedResponse.urlString
+                        print(self.urlString)
+                    }
+                    return
+                }
             }
-            return
-        }
+            print("Videos fetch failed: " + "\(error?.localizedDescription ?? "Unknown error")")
+        }.resume()
     }
-    print("Videos fetch failed: " + "\(error?.localizedDescription ?? "Unknown error")")
-}.resume()
+    
+}
+
+VideoURL(videoId: 3021)
 
 
 /// Copyright (c) 2021 Razeware LLC

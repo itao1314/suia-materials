@@ -55,7 +55,7 @@ struct EpisodeView: View {
         AdaptingStack {
           Text(episode.released + "  ")
           Text(episode.domain + "  ")
-          Text(String(episode.difficulty).capitalized)
+          Text(String(episode.difficulty ?? "").capitalized)
         }
         Text(episode.description)
           .lineLimit(2)

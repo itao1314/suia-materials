@@ -40,7 +40,7 @@ struct ContentView: View {
     NavigationView {
       List {
         HeaderView(count: store.episodes.count)
-        ForEach(store.episodes, id: \.name) { episode in
+        ForEach(store.episodes) { episode in
           ZStack {
             NavigationLink(destination: PlayerView(episode: episode)) {
               EmptyView()

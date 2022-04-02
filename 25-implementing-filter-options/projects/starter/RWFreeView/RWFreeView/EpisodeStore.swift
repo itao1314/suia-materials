@@ -32,7 +32,7 @@
 
 import Foundation
 
-class EpisodeStore: ObservableObject {
+final class EpisodeStore: ObservableObject, Decodable {
   @Published var episodes: [Episode] = []
   @Published var domainFilters: [String: Bool] = [
     "1": true,
@@ -47,15 +47,24 @@ class EpisodeStore: ObservableObject {
     "beginner": true,
     "intermediate": false
   ]
-
+  
+  let baseURLString = "https://api.raywenderlich.com/api/contents"
+  var baseParams = [
+    "filter[subscription_types][]": "free",
+    "filter[content_types][]": "episode",
+    "sort": "-popularity",
+    "page[size]": "20",
+    "filter[q]": ""
+  ]
+  
   func queryDomain(_ id: String) -> URLQueryItem {
     URLQueryItem(name: "filter[domain_ids][]", value: id)
   }
-
+  
   func queryDifficulty(_ label: String) -> URLQueryItem {
     URLQueryItem(name: "filter[difficulties][]", value: label)
   }
-
+  
   let filtersDictionary = [
     "1": "iOS & Swift",
     "2": "Android & Kotlin",
@@ -67,32 +76,39 @@ class EpisodeStore: ObservableObject {
     "beginner": "Beginner",
     "intermediate": "Intermediate"
   ]
-
+  
+  func fetchContents() {
+    guard var urlComponents = URLComponents(string: baseURLString) else { return }
+    urlComponents.setQueryItems(with: baseParams)
+    guard let contentsURL = urlComponents.url else { return }
+    
+    URLSession.shared.dataTask(with: contentsURL) { data, response, error in
+      if let data = data, let response = response as? HTTPURLResponse {
+        print(response.statusCode)
+        if let decodedResponse = try? JSONDecoder().decode(EpisodeStore.self, from: data) {
+          DispatchQueue.main.async {
+            self.episodes = decodedResponse.episodes
+          }
+          return
+        }
+      }
+      print("Contents fetch failed: " + "\(error?.localizedDescription ?? "Unkown error")")
+    }.resume()
+  }
+  
   init() {
-    #if DEBUG
-    createDevData()
-    #endif
+    fetchContents()
   }
+  
+  enum CodingKeys: String, CodingKey {
+    case episodes = "data"
+  }
+  
+  required init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    episodes = try container.decode([Episode].self, forKey: .episodes)
+  }
+  
 }
 
-struct Episode {
-  let name: String
-  let description: String  // description_plain_text
-  let released: String  // released_at
-  let domain: String  // enum
-  let difficulty: String  // enum
-  let videoURLString: String  // will be videoIdentifier: Int
-  let uri: String  // redirects to the real web page
-  var linkURLString: String {
-    "https://www.raywenderlich.com/redirect?uri=" + uri
-  }
 
-  static let domainDictionary = [
-    "1": "iOS & Swift",
-    "2": "Android & Kotlin",
-    "3": "Unity",
-    "5": "macOS",
-    "8": "Server-Side Swift",
-    "9": "Flutter"
-  ]
-}
