@@ -40,6 +40,7 @@ struct Episode: Decodable, Identifiable {
   let released: String
   let difficulty: String?
   let description: String  // description_plain_text
+  let parentName: String?
 
   var domain = ""  // relationships: domains: data: id
 
@@ -62,6 +63,7 @@ struct Episode: Decodable, Identifiable {
     case releasedAt = "released_at"
     case description = "description_plain_text"
     case videoIdentifier = "video_identifier"
+    case parentName = "parent_name"
   }
 
   struct Domains: Codable {
@@ -102,6 +104,7 @@ extension Episode {
       String.self, forKey: .description)
     let videoIdentifier = try attrs.decode(
       Int?.self, forKey: .videoIdentifier)
+    let parentName = try attrs.decode(String?.self, forKey: .parentName)
 
     let rels = try container.nestedContainer(
       keyedBy: RelKeys.self, forKey: .relationships)  // 4
@@ -118,6 +121,7 @@ extension Episode {
       from: releaseDate)
     self.difficulty = difficulty
     self.description = description
+    self.parentName = parentName
     if let videoId = videoIdentifier {
       self.videoURL = VideoURL(videoId: videoId)
     }

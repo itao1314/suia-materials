@@ -48,6 +48,8 @@ final class EpisodeStore: ObservableObject, Decodable {
     "intermediate": false
   ]
   
+  @Published var loading = false
+  
   let baseURLString = "https://api.raywenderlich.com/api/contents"
   var baseParams = [
     "filter[subscription_types][]": "free",
@@ -78,11 +80,17 @@ final class EpisodeStore: ObservableObject, Decodable {
   ]
   
   func fetchContents() {
+    loading = true
     guard var urlComponents = URLComponents(string: baseURLString) else { return }
     urlComponents.setQueryItems(with: baseParams)
     guard let contentsURL = urlComponents.url else { return }
     
     URLSession.shared.dataTask(with: contentsURL) { data, response, error in
+      defer {
+        DispatchQueue.main.async {
+          self.loading = false
+        }
+      }
       if let data = data, let response = response as? HTTPURLResponse {
         print(response.statusCode)
         if let decodedResponse = try? JSONDecoder().decode(EpisodeStore.self, from: data) {

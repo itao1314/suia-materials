@@ -52,6 +52,12 @@ struct EpisodeView: View {
           .font(.headline)
           .fontWeight(.bold)
           .foregroundColor(Color(UIColor.label))
+        if let parentName = episode.parentName, (episode.name == "Introduction" || episode.name == "Conclusion") {
+          Text(parentName)
+            .font(.subheadline)
+            .foregroundColor(Color(UIColor.label))
+            .padding(.top, -5.0)
+        }
         AdaptingStack {
           Text(episode.released + "  ")
           Text(episode.domain + "  ")
