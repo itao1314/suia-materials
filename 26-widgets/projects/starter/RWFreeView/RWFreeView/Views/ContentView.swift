@@ -35,7 +35,8 @@ import SwiftUI
 struct ContentView: View {
   @EnvironmentObject var store: EpisodeStore
   @State private var showFilters = false
-
+  @State private var selectedEpisode: Episode?
+  
   var body: some View {
     NavigationView {
       List {
@@ -45,12 +46,15 @@ struct ContentView: View {
         }
         ForEach(store.episodes) { episode in
           ZStack {
-            NavigationLink(destination: PlayerView(episode: episode)) {
+            NavigationLink(destination: PlayerView(episode: episode), tag: episode, selection: $selectedEpisode) {
               EmptyView()
             }
             .opacity(0)
             .buttonStyle(PlainButtonStyle())
             EpisodeView(episode: episode)
+              .onTapGesture {
+                selectedEpisode = episode
+              }
           }
           .frame(
             maxWidth: .infinity,
@@ -79,25 +83,32 @@ struct ContentView: View {
       }
     }
     .navigationViewStyle(StackNavigationViewStyle())
+    .onOpenURL { url in
+      if let id = url.host, let widgetEpisode = store.episodes.first(where: {
+        $0.id == id
+      }) {
+        selectedEpisode = widgetEpisode
+      }
+    }
   }
-
+  
   init() {
     // 1. White title on black background
     let appearance = UINavigationBarAppearance()
     appearance.backgroundColor = UIColor(named: "top-bkgd")
     appearance.largeTitleTextAttributes =
-      [.foregroundColor: UIColor.white]
+    [.foregroundColor: UIColor.white]
     appearance.titleTextAttributes =
-      [.foregroundColor: UIColor.white]
-
+    [.foregroundColor: UIColor.white]
+    
     // 2. Back button text and arrow color
     UINavigationBar.appearance().tintColor = .white
-
+    
     // 3. Assign configuration to all appearances
     UINavigationBar.appearance().standardAppearance = appearance
     UINavigationBar.appearance().compactAppearance = appearance
     UINavigationBar.appearance().scrollEdgeAppearance = appearance
-
+    
     // 4. Selected segment color
     UISegmentedControl.appearance()
       .selectedSegmentTintColor = UIColor(named: "list-bkgd")

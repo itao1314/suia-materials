@@ -31,6 +31,13 @@
 /// THE SOFTWARE.
 
 import Foundation
+import WidgetKit
+
+extension FileManager {
+  static func sharedContainerURL() -> URL {
+    return FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.tao.RWFreeView.episodes")!
+  }
+}
 
 final class EpisodeStore: ObservableObject, Decodable {
   @Published var episodes: [Episode] = []
@@ -48,6 +55,20 @@ final class EpisodeStore: ObservableObject, Decodable {
     "beginner": true,
     "intermediate": false
   ]
+  
+  var miniEpisodes: [MiniEpisode] = []
+  
+  func writeEpisodes() {
+    let archiveURL = FileManager.sharedContainerURL().appendingPathComponent("episodes.json")
+    print(">>> \(archiveURL)")
+    if let dataToSave = try? JSONEncoder().encode(miniEpisodes) {
+      do {
+        try dataToSave.write(to: archiveURL)
+      } catch {
+        print("Error: Can't write episodes")
+      }
+    }
+  }
 
   func queryDomain(_ id: String) -> URLQueryItem {
     URLQueryItem(name: "filter[domain_ids][]", value: id)
@@ -124,6 +145,11 @@ final class EpisodeStore: ObservableObject, Decodable {
           EpisodeStore.self, from: data) {
           DispatchQueue.main.async {
             self.episodes = decodedResponse.episodes  // 2
+            self.miniEpisodes = self.episodes.map({ episode in
+              MiniEpisode(id: episode.id, name: episode.name, released: episode.released, domain: episode.domain, difficulty: episode.difficulty ?? "", description: episode.description)
+            })
+            self.writeEpisodes()
+            WidgetCenter.shared.reloadTimelines(ofKind: "RWFreeViewWidget")
           }
           return
         }

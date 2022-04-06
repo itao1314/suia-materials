@@ -128,3 +128,23 @@ extension Episode {
     }
   }
 }
+
+extension Episode: Hashable {
+  static func == (lhs: Episode, rhs: Episode) -> Bool {
+    lhs.id == rhs.id
+  }
+  
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+  }
+  
+}
+
+struct MiniEpisode: Codable {
+  let id: String
+  let name: String
+  let released: String
+  let domain: String
+  let difficulty: String
+  let description: String
+}
