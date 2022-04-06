@@ -37,13 +37,40 @@ struct HeaderView: View {
   @State private var queryTerm = ""
   @State private var sortOn = "none"
   @EnvironmentObject var store: EpisodeStore
-
+  let threeColumns = [
+    GridItem(.flexible(minimum: 55)),
+    GridItem(.flexible(minimum: 55)),
+    GridItem(.flexible(minimum: 55))
+  ]
+  
   var body: some View {
     VStack {
       SearchField(queryTerm: $queryTerm)
       HStack {
-        Button("Clear all") { }
+        LazyVGrid(columns: threeColumns) {
+          Button("Clear all") {
+            queryTerm = ""
+            store.baseParams["filter[q]"] = queryTerm
+            store.clearQueryFilters()
+            store.fetchContents()
+          }
           .buttonStyle(HeaderButtonStyle())
+          ForEach(Array(store.domainFilters.merging(store.difficultyFilters) { _, second in
+            second
+          }.filter({
+            $0.value
+          }).keys), id: \.self) { key in
+            Button(store.filtersDictionary[key]!) {
+              if Int(key) == nil {
+                store.difficultyFilters[key]!.toggle()
+              } else {
+                store.domainFilters[key]!.toggle()
+              }
+              store.fetchContents()
+            }
+            .buttonStyle(HeaderButtonStyle())
+          }
+        }
         Spacer()
       }
       HStack {
@@ -73,7 +100,7 @@ struct HeaderView: View {
         .background(Color.gray.opacity(0.8))
         .onChange(of: sortOn) { _ in
           store.baseParams["sort"] = sortOn == "new" ? "-released_at" : "-popularity"
-          store.fetchContents()
+          store.fetchContents()  
         }
       }
       .foregroundColor(Color.white.opacity(0.6))
@@ -95,7 +122,7 @@ struct HeaderView: View {
 struct SearchField: View {
   @EnvironmentObject var store: EpisodeStore
   @Binding var queryTerm: String
-
+  
   var body: some View {
     ZStack(alignment: .leading) {
       if queryTerm.isEmpty {
@@ -108,7 +135,7 @@ struct SearchField: View {
         store.baseParams["filter[q]"] = queryTerm
         store.fetchContents()
       }
-
+      
     }
     .padding(10)
     .background(

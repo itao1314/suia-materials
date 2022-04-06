@@ -83,7 +83,26 @@ final class EpisodeStore: ObservableObject, Decodable {
     loading = true
     guard var urlComponents = URLComponents(string: baseURLString) else { return }
     urlComponents.setQueryItems(with: baseParams)
+    
+    let selectedDomains = domainFilters.filter {
+      $0.value
+    }.keys
+    let domainsQueryItems = selectedDomains.map {
+      queryDomain($0)
+    }
+    
+    let selectedDifficulties = difficultyFilters.filter {
+      $0.value
+    }.keys
+    let difficultyQueryItems = selectedDifficulties.map {
+      queryDifficulty($0)
+    }
+    
+    urlComponents.queryItems! += domainsQueryItems
+    urlComponents.queryItems! += difficultyQueryItems
+    
     guard let contentsURL = urlComponents.url else { return }
+    print(contentsURL)
     
     URLSession.shared.dataTask(with: contentsURL) { data, response, error in
       defer {
@@ -102,6 +121,15 @@ final class EpisodeStore: ObservableObject, Decodable {
       }
       print("Contents fetch failed: " + "\(error?.localizedDescription ?? "Unkown error")")
     }.resume()
+  }
+  
+  func clearQueryFilters() {
+    domainFilters.keys.forEach {
+      domainFilters[$0] = false
+    }
+    difficultyFilters.keys.forEach {
+      difficultyFilters[$0] = false
+    }
   }
   
   init() {

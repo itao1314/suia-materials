@@ -42,6 +42,7 @@ struct FilterOptionsView: View {
         Spacer()
         Button(
           action: {
+            store.fetchContents()
             presentationMode.wrappedValue.dismiss()
             // swiftlint:disable:next multiple_closures_with_trailing_closure
           }) {
@@ -104,9 +105,12 @@ struct FilterOptionsView: View {
         // swiftlint:enable force_unwrapping
         Spacer()
         HStack {
-          Button("Clear All") { }
+          Button("Clear All") {
+            store.clearQueryFilters()
+          }
           .buttonStyle(FilterButtonStyle(selected: false, width: 160))
           Button("Apply") {
+            store.fetchContents()
             presentationMode.wrappedValue.dismiss()
           }
           .buttonStyle(FilterButtonStyle(selected: true, width: 160))
